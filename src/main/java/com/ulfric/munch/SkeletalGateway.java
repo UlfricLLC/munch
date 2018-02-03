@@ -1,5 +1,6 @@
 package com.ulfric.munch;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.ulfric.munch.model.Transaction;
@@ -30,16 +31,8 @@ public abstract class SkeletalGateway implements Gateway {
 			throw new IllegalArgumentException("Transaction.Amount was null");
 		}
 
-		if (!isPositive(transaction.getAmount().getDollars()) && !isPositive(transaction.getAmount().getCents())) {
-			throw new IllegalArgumentException("Transaction.Amount.Dollars and Transaction.Amount.Cents were both missing");
-		}
-
-		if (isNegative(transaction.getAmount().getDollars())) {
-			throw new IllegalArgumentException("Transaction.Amount.Dollars was negative");
-		}
-
-		if (isNegative(transaction.getAmount().getCents())) {
-			throw new IllegalArgumentException("Transaction.Amount.Cents was negative");
+		if (!isValid(transaction.getAmount())) {
+			throw new IllegalArgumentException("Transaction.Amount was null or invalid: " + transaction.getAmount());
 		}
 
 		if (transaction.getCard() == null) {
@@ -63,20 +56,12 @@ public abstract class SkeletalGateway implements Gateway {
 		}
 	}
 
-	private boolean isPositive(Long value) {
+	private boolean isValid(BigDecimal value) {
 		if (value == null) {
 			return false;
 		}
 
-		return value.longValue() > 0;
-	}
-
-	private boolean isNegative(Long value) {
-		if (value == null) {
-			return false;
-		}
-
-		return value.longValue() < 0;
+		return value.compareTo(BigDecimal.ZERO) > 0;
 	}
 
 }

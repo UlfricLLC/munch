@@ -1,12 +1,15 @@
 package com.ulfric.munch.model;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Map;
 
 public class Transaction {
 
 	private Customer customer;
 	private Card card;
-	private MonetaryAmount amount;
+	private Currency currency;
+	private BigDecimal amount;
 	private String statementDescriptor;
 	private String description;
 	private Map<String, String> metadata;
@@ -27,11 +30,19 @@ public class Transaction {
 		this.card = card;
 	}
 
-	public MonetaryAmount getAmount() {
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(MonetaryAmount amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

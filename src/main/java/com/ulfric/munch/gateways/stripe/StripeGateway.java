@@ -40,7 +40,7 @@ public class StripeGateway extends SkeletalGateway {
 
 		Map<String, Object> request = new HashMap<>();
 		request.put("amount", MonetaryUtil.toOneString(transaction.getAmount()));
-		request.put("currency", MonetaryUtil.currencyCode(transaction.getAmount()));
+		request.put("currency", MonetaryUtil.currencyCode(transaction.getCurrency()));
 
 		Map<String, String> metadata = new HashMap<>();
 		metadata.put("api", "munch");
