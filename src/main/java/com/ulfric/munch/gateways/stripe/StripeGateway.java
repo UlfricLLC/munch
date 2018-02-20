@@ -14,7 +14,7 @@ import com.stripe.model.Charge;
 import com.stripe.net.RequestOptions;
 import com.stripe.net.RequestOptions.RequestOptionsBuilder;
 import com.ulfric.munch.Credentials;
-import com.ulfric.munch.SkeletalGateway;
+import com.ulfric.munch.TypedCredentialsGateway;
 import com.ulfric.munch.model.Address;
 import com.ulfric.munch.model.Card;
 import com.ulfric.munch.model.Customer;
@@ -26,7 +26,7 @@ import com.ulfric.munch.util.MonetaryUtil;
 import com.ulfric.munch.util.StringUtil;
 import com.ulfric.munch.util.TemporalUtil;
 
-public class StripeGateway extends SkeletalGateway {
+public class StripeGateway extends TypedCredentialsGateway<RequestOptions> {
 
 	public StripeGateway(Credentials credentials) {
 		super(credentials);
@@ -36,7 +36,7 @@ public class StripeGateway extends SkeletalGateway {
 	public TransactionResult process(Transaction transaction) {
 		TransactionResult result = super.process(transaction);
 
-		RequestOptions options = options();
+		RequestOptions options = credentials();
 
 		Map<String, Object> request = new HashMap<>();
 		request.put("amount", MonetaryUtil.toOneString(transaction.getAmount()));
@@ -144,7 +144,8 @@ public class StripeGateway extends SkeletalGateway {
 		return result;
 	}
 
-	private RequestOptions options() {
+	@Override
+	protected RequestOptions credentials(Credentials credentials) {
 		return new RequestOptionsBuilder()
 				.setApiKey(credentials.get("secret"))
 				.setStripeVersion(credentials.get("version"))
