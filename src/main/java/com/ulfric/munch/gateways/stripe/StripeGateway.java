@@ -62,7 +62,7 @@ public class StripeGateway extends TypedCredentialsGateway<RequestOptions> {
 		Customer customer = transaction.getCustomer();
 		if (customer != null) {
 			if (StringUtil.isNotBlank(customer.getEmail())) {
-				request.put("receipt_email", customer.getEmail());
+				//request.put("receipt_email", customer.getEmail());
 				metadata.put("email", customer.getEmail());
 			}
 
